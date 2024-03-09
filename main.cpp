@@ -1,211 +1,220 @@
-#include <iostream>
-#include <array>
-#include <cctype>
-#include <chrono>
-#include <thread>
+#include<iostream>
+#include<vector>
+#include<string>
+#include<ctime>
+#include<cstdlib>
 
-#include <digestpp.hpp>
-#include <rlutil.h>
-#include <random.hpp>
-#include <csv.hpp>
-#include <date.h>
+class Carte{
+private:
+    int valoareCarte;
+    std::string culoareCarte;
 
-#include <Helper.h>
-
-/////////////////////////////////////////////////////////////////////////////////////////
-/// Exemplu de funcții pentru a stoca parole de utilizatori
-/// Folosim biblioteca digestpp pentru a nu stoca parolele în clar
-std::string make_salt() {
-    /// important este ca salt-ul să fie unic, nu contează că nu este aleatoriu
-    /// pentru fiecare user, salt-ul se stochează ca text clar, lângă parola hashed
-    /// Exemplu:
-    /// class User {
-    ///     std::string hashed_password;
-    ///     std::string salt;
-    /// };
-    ///
-    static uint64_t nr = 1u;
-    std::string salt;
-    auto bytes = static_cast<char*>(static_cast<void*>(&nr));
-    for(unsigned i = 0; i < 16; i++) {
-        salt += bytes[i%8];
-    }
-    ++nr;
-    return salt;
-}
-
-std::string hash_password(const std::string& plain, const std::string& salt) {
-    return digestpp::blake2b(512).set_salt(salt).absorb(plain).hexdigest();
-}
-/////////////////////////////////////////////////////////////////////////////////////////
-
-#include <Helper.h>
-
-int main() {
-    std::cout << "Hello, world!\n";
-    std::array<int, 100> v{};
-    int nr;
-    std::cout << "Introduceți nr: ";
-    /////////////////////////////////////////////////////////////////////////
-    /// Observație: dacă aveți nevoie să citiți date de intrare de la tastatură,
-    /// dați exemple de date de intrare folosind fișierul tastatura.txt
-    /// Trebuie să aveți în fișierul tastatura.txt suficiente date de intrare
-    /// (în formatul impus de voi) astfel încât execuția programului să se încheie.
-    /// De asemenea, trebuie să adăugați în acest fișier date de intrare
-    /// pentru cât mai multe ramuri de execuție.
-    /// Dorim să facem acest lucru pentru a automatiza testarea codului, fără să
-    /// mai pierdem timp de fiecare dată să introducem de la zero aceleași date de intrare.
-    ///
-    /// Pe GitHub Actions (bife), fișierul tastatura.txt este folosit
-    /// pentru a simula date introduse de la tastatură.
-    /// Bifele verifică dacă programul are erori de compilare, erori de memorie și memory leaks.
-    ///
-    /// Dacă nu puneți în tastatura.txt suficiente date de intrare, îmi rezerv dreptul să vă
-    /// testez codul cu ce date de intrare am chef și să nu pun notă dacă găsesc vreun bug.
-    /// Impun această cerință ca să învățați să faceți un demo și să arătați părțile din
-    /// program care merg (și să le evitați pe cele care nu merg).
-    ///
-    /////////////////////////////////////////////////////////////////////////
-    std::cin >> nr;
-    /////////////////////////////////////////////////////////////////////////
-    for(int i = 0; i < nr; ++i) {
-        std::cout << "v[" << i << "] = ";
-        std::cin >> v[i];
-    }
-    std::cout << "\n\n";
-    std::cout << "Am citit de la tastatură " << nr << " elemente:\n";
-    for(int i = 0; i < nr; ++i) {
-        std::cout << "- " << v[i] << "\n";
-    }
-    ///////////////////////////////////////////////////////////////////////////
-    /// Pentru date citite din fișier, NU folosiți tastatura.txt. Creați-vă voi
-    /// alt fișier propriu cu ce alt nume doriți.
-    /// Exemplu:
-    /// std::ifstream fis("date.txt");
-    /// for(int i = 0; i < nr2; ++i)
-    ///     fis >> v2[i];
-    ///
-    ///////////////////////////////////////////////////////////////////////////
-    ///                Exemplu de utilizare cod generat                     ///
-    ///////////////////////////////////////////////////////////////////////////
-    Helper helper;
-    helper.help();
-    ///////////////////////////////////////////////////////////////////////////
-
-    std::cin.ignore(); // clear last \n
-
-    std::cout << "-----------------------------------------------\n";
-
-    ///////////////////////////////////////////////////////////////////////////
-    ///                Exemplu criptare parole (digestpp)                   ///
-    ///////////////////////////////////////////////////////////////////////////
-    std::string plain = "temaOOP12345$";
-    auto salt1 = make_salt();  // salt pt user1
-    auto salt2 = make_salt();  // salt pt user2
-    /// Explicație: deși userii au aceeași parolă, vor avea hash-uri diferite
-    /// De ce am vrea asta? Dacă aflăm hash-ul pt un user, nu vom avea automat hash-urile
-    /// și pentru alți utilizatori care au folosit aceeași parolă
-    /// Alte explicații aici: https://en.wikipedia.org/wiki/Rainbow_table
-    ///
-    std::cout << "Parola hashed pt user1: " << hash_password(plain, salt1) << "\n"
-              << "Parola hashed pt user2: " << hash_password(plain, salt2) << "\n";
-    ///
-    /// Altă variantă pentru parole criptate este cu bcrypt, dar trebuie compilat.
-    /// Un exemplu demo (mai vechi) este aici: https://github.com/zackartz/Bcrypt.cpp
-    ///
-    std::cout << "-----------------------------------------------\n";
-
-    ///////////////////////////////////////////////////////////////////////////
-    ///               Exemplu terminal interactiv (rlutil)                  ///
-    ///////////////////////////////////////////////////////////////////////////
-    rlutil::setConsoleTitle("test");
-    rlutil::saveDefaultColor();
-    rlutil::setColor(rlutil::BLUE);
-    rlutil::cls();
-    int key = rlutil::getkey(); // apel blocant; apelează kbhit și getch
-    switch(std::tolower(key)) {
-        case rlutil::KEY_SPACE:
-            std::cout << "pressed space\n";
-            break;
-        case 'w':
-            std::cout << "pressed w\n";
-            break;
-        case 'a':
-            std::cout << "pressed a\n";
-            break;
-        case 's':
-            std::cout << "pressed s\n";
-            break;
-        case 'd':
-            std::cout << "pressed d\n";
-            break;
-        default:
-            std::cout << "other key (" << key << ")\n";
-            break;
-    }
-    std::cout << "test color text\n";
-    rlutil::resetColor();
-
-    std::cout << "-----------------------------------------------\n";
-
-    ///////////////////////////////////////////////////////////////////////////
-    ///                           Exemplu sleep                             ///
-    ///////////////////////////////////////////////////////////////////////////
-    using namespace std::chrono_literals;
-    std::cout << "begin sleep\n";
-    std::this_thread::sleep_for(600ms);
-    std::cout << "end sleep\n";
-
-    std::cout << "-----------------------------------------------\n";
-
-    ///////////////////////////////////////////////////////////////////////////
-    ///                     Exemplu numere aleatoare                        ///
-    ///////////////////////////////////////////////////////////////////////////
-    using Random = effolkronium::random_static;
-    // Random::seed(42);
-    std::cout << Random::get(1, 1000) << "\n";
-
-    std::cout << "-----------------------------------------------\n";
-
-    ///////////////////////////////////////////////////////////////////////////
-    ///           Exemplu fișier CSV (comma separated value)                ///
-    ///////////////////////////////////////////////////////////////////////////
-    using namespace csv;
-    CSVReader reader{"date.csv"};
-    for (CSVRow& row : reader) {
-        std::cout << "nume: " << row["nume"].get_sv() << "\n";
-        // std::cout << "nume: " << row["nume"].get<>() << "\n";
+public:
+    // constructor initializare carte
+    Carte(int valoareCarte, const std::string &culoareCarte) : valoareCarte{valoareCarte}, culoareCarte{culoareCarte} {
+//        std::cout<<"Initializare carte"<<std::endl;
     }
 
-    std::cout << "-----------------------------------------------\n";
+    std::string getCuloareCarte() const {return culoareCarte;}
+    int getValoareCarte() const {return valoareCarte;}
+    friend std::ostream& operator<<(std::ostream& os, const Carte& carte);
+};
 
-    ///////////////////////////////////////////////////////////////////////////
-    ///              Exemplu de lucru cu date calendaristice                ///
-    ///////////////////////////////////////////////////////////////////////////
-    using namespace std::chrono;
-    using namespace date;
-    using date::sys_days;
-    using date::days;
-    using date::weeks;
-    using date::months;
-    auto d1 = 2022_y/10/01;
-    auto d2 = 2023_y/05/26;
+std::ostream& operator<<(std::ostream& os, const Carte& carte){
+    os << carte.valoareCarte<<" de "<<carte.culoareCarte<<"\n";
+    return os;
+};
 
-    auto dp1 = sys_days{d1};
-    auto dp2 = sys_days{d2};
 
-    std::cout << "Anul 2022-2023 are "
-              << duration<float, months::period>(dp2 - dp1).count() << " luni"
-              << " sau "
-              << duration<float, weeks::period>(dp2 - dp1).count() << " săptămâni"
-              << " sau "
-              << duration<float, days::period>(dp2 - dp1).count() << " zile"
-              << ", adică "
-              << floor<months>(dp2 - dp1).count() << " luni, "
-              << floor<weeks>(dp2 - dp1 - floor<months>(dp2 - dp1)).count() << " săptămâni, "
-              << floor<days>(dp2 - dp1 - floor<weeks>(dp2 - dp1)).count() - 1 << " zile."
-              << "\n";
+class Dealer{
+private:
+    std::vector<Carte> pachet;  // pachetul de carti
+    std::vector<int> masa;  // cartile care sunt pe masa
+    int cartiPachet;  // numarul de carti din pachet - initial 32
 
-    std::cout << "-----------------------------------------------\n";
+    void afisareUltimaCarte(){
+        std::cout<<masa[masa.size()-1];
+    };
+
+    int numarPuncteRand(int nrPuncte = 0){  // numara numarul de puncte din randul respectiv
+        if(masa[masa.size()-1] == 10 || masa[masa.size()-1] == 11){
+            nrPuncte++;
+        }
+        return nrPuncte;
+    }
+    int randomIndexGenerator(){
+        int randomIndex, max = pachet.size();
+        srand(time(0));
+        randomIndex = (rand() % max) + 1;
+        return randomIndex;
+    }
+
+public:
+    Dealer(std::vector<Carte> pachet_, int cartiPachet_): pachet{pachet_}, cartiPachet{cartiPachet_}{  // constr initializare
+        std::cout<<"Pachetul a fost initializat cu succes!"<<std::endl;
+    }
+    Dealer(const Dealer& other): pachet{other.pachet}, masa{other.masa}, cartiPachet{other.cartiPachet}{
+        std::cout<<"Constructor de copiere pentru Dealer"<<std::endl;  // util pentru functia de restart
+    }
+    Dealer& operator=(const Dealer& other){  // operator= de copiere
+        pachet = other.pachet;
+        masa = other.masa;
+        cartiPachet = other.cartiPachet;
+        std::cout<<"operator= copiere Dealer"<<std::endl;
+        return *this;
+    }
+    // functii geter
+    std::vector<Carte> get_pachet() {return pachet;}
+    int get_cartiPachet() {return cartiPachet;}
+
+
+
+};
+
+class Jucator{
+private:
+    std::vector<Carte> manaJucator;  // cartile din mana jucatorului
+    int nrCartiJucator;  // - numarul de carti - maxim 4, minim 0
+    bool aInceputRandul; // decide daca jucatorul are sau nu prima mutare
+
+
+    void joacaCarte(int indice){
+        // masa.push_back(manaJucator[indice]);
+    };
+
+    void endTurn(){
+        // daca jucatorul a inceput randul si nu mai vrea sa il continue, il poate termina
+    };
+
+public:
+    Jucator(std::vector<Carte> manaJucator_, int nrCartiJucator_, bool aInceputRandul_): manaJucator{manaJucator_}, nrCartiJucator{nrCartiJucator_}, aInceputRandul{aInceputRandul_}{
+        std::cout<<"Ai primit 4 carti"<<std::endl; // constr initializare
+
+    }
+    Jucator(const Jucator& other): manaJucator{other.manaJucator}, nrCartiJucator{other.nrCartiJucator}, aInceputRandul{other.aInceputRandul}{
+        std::cout<<"Constructor de copiere pentru Jucator"<<std::endl; // util pentru functia de restart cu acelasi pachet
+    }
+    ~Jucator(){ // destructor
+        std::cout<<"Destructor Jucator"<<std::endl;
+    }
+    // functii getter
+    std::vector<Carte> get_manaJucator(){return manaJucator;}
+    int get_cartiJucator(){return nrCartiJucator;}
+    bool get_aInceputRandul(){return aInceputRandul;}
+
+};
+
+class Bot{
+private:
+    std::vector<Carte> manaBot; // cartile folosite de bot
+    int nrCartiBot; // numarul de carti din mana bot-ului
+    bool aInceputRandul; // decide daca botul a avut sau nu prima mutare (opusul variabilei din Jucator)
+    void atac(int ultimaCarte){
+        // daca bot-ul are in pachet ultima carte de pe masa, o va folosi pentru a continua randul
+    };
+    void taiere(int nrPuncte, int ultimaCarte){
+        // daca bot-ul nu are in pachet ultima carte de pe masa, in randul respectiv a fost folosit cel putin un punct, iar bot-ul are in pachet o carte de 7
+        // atunci o va folosi pentru a continua randul
+    };
+public:
+    Bot(std::vector<Carte> manaBot_, int nrCartiBot_, bool aInceputRandul_): manaBot{manaBot_}, nrCartiBot{nrCartiBot_}, aInceputRandul{aInceputRandul_}{
+        std::cout<<"Initializare Bot"<<std::endl;  // initializare
+    }
+    // functii getter
+    std::vector<Carte> get_manaBot(){return manaBot;}
+    int get_cartiBot(){return nrCartiBot;}
+    bool get_aInceputRandulBot(){return aInceputRandul;}
+};
+
+
+int main(){
+    std::vector<Carte> pachetC;
+
+    // init Carte
+    std::vector<std::string> culori = {"trefla", "romb", "inima rosie", "inima neagra"};
+    for(int i = 7; i<= 14; i++){
+        for(std::string culoare : culori){
+            Carte carte = {i,culoare};
+            pachetC.push_back(carte);
+        }
+    }
+
+    // init Dealer
+    Dealer pachetInitial{pachetC,32};
+
+    // operator= de copiere
+    Dealer copiePachet = pachetInitial;
+    std::cout<<std::endl;
+
+
+    // afisare carti din pachet
+    std::cout<<"Pachetul contine urmatoarele carti"<<std::endl;
+    for(Carte carte : pachetInitial.get_pachet()){
+        std::cout<<carte;
+    }
+    std::cout<<std::endl;
+
+    // init Jucator
+    std::vector<Carte> mana;
+    bool inceputRandJucator = true;
+
+    std::vector<Carte> pachet = pachetInitial.get_pachet();
+    // alocare carti pentru jucator
+    for(int i = 0; i < 4; i++){
+        int ceva_random = 5;  // se va defini o functie care alege un numar random, 5 este placeholder
+        mana.push_back(pachet[ceva_random]);
+        pachet.erase(pachet.begin() + ceva_random);
+    }
+
+    Jucator manaInitialaJucator{mana,4,inceputRandJucator};
+
+    // afisare carti din mana jucatorului
+    if(manaInitialaJucator.get_aInceputRandul()){
+        std::cout<<"Pachetul tau contine: "<<std::endl;
+        for(Carte carte : manaInitialaJucator.get_manaJucator()){
+            std::cout<<carte;
+        }
+    }
+    std::cout<<std::endl;
+
+
+    // init Bot
+    std::vector<Carte> manaB;
+    bool inceputRandBot = !inceputRandJucator;
+
+    // alocare carti pentru bot
+    for(int i = 0; i < 4; i++){
+        int ceva_random = 7;  // se va defini o functie care alege un numar random, 5 este placeholder
+        manaB.push_back(pachet[ceva_random]);
+        pachet.erase(pachet.begin() + ceva_random);
+    }
+
+    Bot manaInitialaBot{manaB,4,inceputRandBot};
+
+    // afisare mana bot, nu va ramane in codul final
+    std::cout<<"Pachetul bot-ului contine:"<<std::endl;
+    for(Carte carte : manaInitialaBot.get_manaBot()){
+        std::cout<<carte;
+    }
+
+    std::cout<<std::endl<<"In pachet au ramas urmatoarele carti:"<<std::endl;
+    // afisare carti ramase dupa alocare, nu va ramane in codul final
+    for(Carte carte : pachet){
+        std::cout<<carte;
+    }
+
+    std::cout<<std::endl;
+
+    // copiere mana initiala
+    Jucator manaInitialaJucatorCopie(manaInitialaJucator);
+
+    // afisare pachet initial
+    std::cout<<"Pachetul tau initial continea:"<<std::endl;
+    for(Carte carte : manaInitialaJucatorCopie.get_manaJucator()){
+        std::cout<<carte;
+    }
+
+    std::cout<<std::endl;
+
     return 0;
 }
