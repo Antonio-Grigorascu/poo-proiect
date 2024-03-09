@@ -4,6 +4,7 @@
 #include<ctime>
 #include<cstdlib>
 
+
 class Carte{
 private:
     int valoareCarte;
@@ -18,12 +19,28 @@ public:
     std::string getCuloareCarte() const {return culoareCarte;}
     int getValoareCarte() const {return valoareCarte;}
     friend std::ostream& operator<<(std::ostream& os, const Carte& carte);
-};
+    };
 
-std::ostream& operator<<(std::ostream& os, const Carte& carte){
-    os << carte.valoareCarte<<" de "<<carte.culoareCarte<<"\n";
-    return os;
-};
+    std::string schimbareValoare(int valoare){
+        if(valoare == 11){
+            return ("A");
+        }
+        if(valoare == 12){
+            return ("J");
+        }
+        if(valoare == 13){
+            return ("Q");
+        }
+        if(valoare == 14){
+            return ("K");
+        }
+        return std::to_string(valoare);
+    }
+
+    std::ostream& operator<<(std::ostream& os, const Carte& carte){
+        os << schimbareValoare(carte.valoareCarte)<<" de "<<carte.culoareCarte<<std::endl;
+        return os;
+    };
 
 
 class Dealer{
@@ -32,22 +49,6 @@ private:
     std::vector<int> masa;  // cartile care sunt pe masa
     int cartiPachet;  // numarul de carti din pachet - initial 32
 
-    void afisareUltimaCarte(){
-        std::cout<<masa[masa.size()-1];
-    };
-
-    int numarPuncteRand(int nrPuncte = 0){  // numara numarul de puncte din randul respectiv
-        if(masa[masa.size()-1] == 10 || masa[masa.size()-1] == 11){
-            nrPuncte++;
-        }
-        return nrPuncte;
-    }
-    int randomIndexGenerator(){
-        int randomIndex, max = pachet.size();
-        srand(time(0));
-        randomIndex = (rand() % max) + 1;
-        return randomIndex;
-    }
 
 public:
     Dealer(std::vector<Carte> pachet_, int cartiPachet_): pachet{pachet_}, cartiPachet{cartiPachet_}{  // constr initializare
@@ -66,6 +67,12 @@ public:
     // functii geter
     std::vector<Carte> get_pachet() {return pachet;}
     int get_cartiPachet() {return cartiPachet;}
+    int randomIndexGenerator(int max){
+        int randomIndex;
+        srand(time(0));
+        randomIndex = (rand() % max) + 1;
+        return randomIndex;
+    }
 
 
 
@@ -78,13 +85,13 @@ private:
     bool aInceputRandul; // decide daca jucatorul are sau nu prima mutare
 
 
-    void joacaCarte(int indice){
-        // masa.push_back(manaJucator[indice]);
-    };
-
-    void endTurn(){
-        // daca jucatorul a inceput randul si nu mai vrea sa il continue, il poate termina
-    };
+//    void joacaCarte(int indice){
+//        // masa.push_back(manaJucator[indice]);
+//    };
+//
+//    void endTurn(){
+//        // daca jucatorul a inceput randul si nu mai vrea sa il continue, il poate termina
+//    };
 
 public:
     Jucator(std::vector<Carte> manaJucator_, int nrCartiJucator_, bool aInceputRandul_): manaJucator{manaJucator_}, nrCartiJucator{nrCartiJucator_}, aInceputRandul{aInceputRandul_}{
@@ -109,13 +116,13 @@ private:
     std::vector<Carte> manaBot; // cartile folosite de bot
     int nrCartiBot; // numarul de carti din mana bot-ului
     bool aInceputRandul; // decide daca botul a avut sau nu prima mutare (opusul variabilei din Jucator)
-    void atac(int ultimaCarte){
-        // daca bot-ul are in pachet ultima carte de pe masa, o va folosi pentru a continua randul
-    };
-    void taiere(int nrPuncte, int ultimaCarte){
-        // daca bot-ul nu are in pachet ultima carte de pe masa, in randul respectiv a fost folosit cel putin un punct, iar bot-ul are in pachet o carte de 7
-        // atunci o va folosi pentru a continua randul
-    };
+//    void atac(int ultimaCarte){
+//        // daca bot-ul are in pachet ultima carte de pe masa, o va folosi pentru a continua randul
+//    };
+//    void taiere(int nrPuncte, int ultimaCarte){
+//        // daca bot-ul nu are in pachet ultima carte de pe masa, in randul respectiv a fost folosit cel putin un punct, iar bot-ul are in pachet o carte de 7
+//        // atunci o va folosi pentru a continua randul
+//    };
 public:
     Bot(std::vector<Carte> manaBot_, int nrCartiBot_, bool aInceputRandul_): manaBot{manaBot_}, nrCartiBot{nrCartiBot_}, aInceputRandul{aInceputRandul_}{
         std::cout<<"Initializare Bot"<<std::endl;  // initializare
@@ -161,7 +168,7 @@ int main(){
     std::vector<Carte> pachet = pachetInitial.get_pachet();
     // alocare carti pentru jucator
     for(int i = 0; i < 4; i++){
-        int ceva_random = 5;  // se va defini o functie care alege un numar random, 5 este placeholder
+        int ceva_random = pachetInitial.randomIndexGenerator(pachet.size());
         mana.push_back(pachet[ceva_random]);
         pachet.erase(pachet.begin() + ceva_random);
     }
@@ -184,7 +191,7 @@ int main(){
 
     // alocare carti pentru bot
     for(int i = 0; i < 4; i++){
-        int ceva_random = 7;  // se va defini o functie care alege un numar random, 5 este placeholder
+        int ceva_random = pachetInitial.randomIndexGenerator(pachet.size());
         manaB.push_back(pachet[ceva_random]);
         pachet.erase(pachet.begin() + ceva_random);
     }
