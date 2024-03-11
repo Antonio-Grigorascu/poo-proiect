@@ -202,6 +202,7 @@ int main(){
     }
 
     Bot manaInitialaBot{manaB,4,inceputRandBot};
+    Bot manaInitialaBotCopie(manaInitialaBot);
 
     // afisare mana bot, nu va ramane in codul final
     std::cout<<"Pachetul bot-ului contine:"<<std::endl;
