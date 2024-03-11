@@ -51,7 +51,7 @@ private:
 
 
 public:
-    Dealer(std::vector<Carte> pachet_, int cartiPachet_): pachet{pachet_}, cartiPachet{cartiPachet_}{  // constr initializare
+    Dealer(const std::vector<Carte>& pachet_, int cartiPachet_): pachet{pachet_}, cartiPachet{cartiPachet_}{  // constr initializare
         std::cout<<"Pachetul a fost initializat cu succes!"<<std::endl;
     }
     Dealer(const Dealer& other): pachet{other.pachet}, masa{other.masa}, cartiPachet{other.cartiPachet}{
@@ -99,7 +99,7 @@ private:
 //    };
 
 public:
-    Jucator(std::vector<Carte> manaJucator_, int nrCartiJucator_, bool aInceputRandul_): manaJucator{manaJucator_}, nrCartiJucator{nrCartiJucator_}, aInceputRandul{aInceputRandul_}{
+    Jucator(const std::vector<Carte>& manaJucator_, int nrCartiJucator_, bool aInceputRandul_): manaJucator{manaJucator_}, nrCartiJucator{nrCartiJucator_}, aInceputRandul{aInceputRandul_}{
         std::cout<<"Ai primit 4 carti"<<std::endl; // constr initializare
 
     }
@@ -129,7 +129,7 @@ private:
 //        // atunci o va folosi pentru a continua randul
 //    };
 public:
-    Bot(std::vector<Carte> manaBot_, int nrCartiBot_, bool aInceputRandul_): manaBot{manaBot_}, nrCartiBot{nrCartiBot_}, aInceputRandul{aInceputRandul_}{
+    Bot(const std::vector<Carte>& manaBot_, int nrCartiBot_, bool aInceputRandul_): manaBot{manaBot_}, nrCartiBot{nrCartiBot_}, aInceputRandul{aInceputRandul_}{
         std::cout<<"Initializare Bot"<<std::endl;  // initializare
     }
     // functii getter
