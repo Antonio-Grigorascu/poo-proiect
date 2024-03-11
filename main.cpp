@@ -16,31 +16,31 @@ public:
 //        std::cout<<"Initializare carte"<<std::endl;
     }
     // functii getter
-   // std::string getCuloareCarte() const {return culoareCarte;}
-   // int getValoareCarte() const {return valoareCarte;}
+    // std::string getCuloareCarte() const {return culoareCarte;}
+    // int getValoareCarte() const {return valoareCarte;}
     friend std::ostream& operator<<(std::ostream& os, const Carte& carte);
-    };
+};
 
-    std::string schimbareValoare(int valoare){
-        if(valoare == 11){
-            return ("A");
-        }
-        if(valoare == 12){
-            return ("J");
-        }
-        if(valoare == 13){
-            return ("Q");
-        }
-        if(valoare == 14){
-            return ("K");
-        }
-        return std::to_string(valoare);
+std::string schimbareValoare(int valoare){
+    if(valoare == 11){
+        return ("A");
     }
+    if(valoare == 12){
+        return ("J");
+    }
+    if(valoare == 13){
+        return ("Q");
+    }
+    if(valoare == 14){
+        return ("K");
+    }
+    return std::to_string(valoare);
+}
 
-    std::ostream& operator<<(std::ostream& os, const Carte& carte){
-        os << schimbareValoare(carte.valoareCarte)<<" de "<<carte.culoareCarte<<std::endl;
-        return os;
-    };
+std::ostream& operator<<(std::ostream& os, const Carte& carte){
+    os << schimbareValoare(carte.valoareCarte)<<" de "<<carte.culoareCarte<<std::endl;
+    return os;
+};
 
 
 class Dealer{
@@ -71,7 +71,7 @@ public:
 
     // functii geter
     std::vector<Carte> get_pachet() {return pachet;}
-   // int get_cartiPachet() {return cartiPachet;}
+    // int get_cartiPachet() {return cartiPachet;}
     int randomIndexGenerator(int max){
         int randomIndex;
         srand(time(0));
@@ -111,7 +111,7 @@ public:
     }
     // functii getter
     std::vector<Carte> get_manaJucator(){return manaJucator;}
-  //  int get_cartiJucator(){return nrCartiJucator;}
+    //  int get_cartiJucator(){return nrCartiJucator;}
     bool get_aInceputRandul(){return aInceputRandul;}
 
 };
@@ -134,8 +134,8 @@ public:
     }
     // functii getter
     std::vector<Carte> get_manaBot(){return manaBot;}
-   // int get_cartiBot(){return nrCartiBot;}
-   // bool get_aInceputRandulBot(){return aInceputRandul;}
+    // int get_cartiBot(){return nrCartiBot;}
+    // bool get_aInceputRandulBot(){return aInceputRandul;}
 };
 
 
@@ -202,7 +202,6 @@ int main(){
     }
 
     Bot manaInitialaBot{manaB,4,inceputRandBot};
-
 
     // afisare mana bot, nu va ramane in codul final
     std::cout<<"Pachetul bot-ului contine:"<<std::endl;
