@@ -15,7 +15,7 @@ public:
     Carte(int valoareCarte, const std::string &culoareCarte) : valoareCarte{valoareCarte}, culoareCarte{culoareCarte} {
 //        std::cout<<"Initializare carte"<<std::endl;
     }
-
+    // functii getter
     std::string getCuloareCarte() const {return culoareCarte;}
     int getValoareCarte() const {return valoareCarte;}
     friend std::ostream& operator<<(std::ostream& os, const Carte& carte);
@@ -64,6 +64,11 @@ public:
         std::cout<<"operator= copiere Dealer"<<std::endl;
         return *this;
     }
+
+    ~Dealer(){ // destructor
+        std::cout<<"Destructor Dealer"<<std::endl;
+    }
+
     // functii geter
     std::vector<Carte> get_pachet() {return pachet;}
     int get_cartiPachet() {return cartiPachet;}
