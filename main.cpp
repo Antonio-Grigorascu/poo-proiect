@@ -70,7 +70,17 @@ public:
 
     // functii geter
     std::vector<Carte> get_pachet() {return pachet;}
-    // int get_cartiPachet() {return cartiPachet;}
+    int get_cartiPachet() {return cartiPachet;}
+
+    // functii setter
+    void setCartiPachet(int cartiPachet_) {
+        Dealer::cartiPachet = cartiPachet_;
+    }
+
+    void setPachet(const std::vector<Carte> &pachet_) {
+        Dealer::pachet = pachet_;
+    }
+
     int randomIndexGenerator(int max){
         int randomIndex;
 
@@ -163,6 +173,7 @@ int main(){
     std::cout<<std::endl;
 
 
+
     // afisare carti din pachet
     std::cout<<"Pachetul contine urmatoarele carti"<<std::endl;
     for(Carte const &carte : pachetInitial.get_pachet()){
@@ -176,9 +187,10 @@ int main(){
     std::vector<Carte> pachet = pachetInitial.get_pachet();
     // alocare carti pentru jucator
     for(int i = 0; i < 4; i++){
-        int ceva_random = pachetInitial.randomIndexGenerator(pachet.size()-1);
+        int ceva_random = pachetInitial.randomIndexGenerator(pachetInitial.get_cartiPachet() - 1);
         mana.push_back(pachet[ceva_random]);
         pachet.erase(pachet.begin() + ceva_random);
+        pachetInitial.setCartiPachet(pachetInitial.get_cartiPachet() - 1);
     }
 
     Jucator manaInitialaJucator{mana,4};
@@ -197,9 +209,10 @@ int main(){
 
     // alocare carti pentru bot
     for(int i = 0; i < 4; i++){
-        int ceva_random = pachetInitial.randomIndexGenerator(pachet.size()-1);
+        int ceva_random = pachetInitial.randomIndexGenerator(pachetInitial.get_cartiPachet()-1);
         manaB.push_back(pachet[ceva_random]);
         pachet.erase(pachet.begin() + ceva_random);
+        pachetInitial.setCartiPachet(pachetInitial.get_cartiPachet() - 1);
     }
 
     Bot manaInitialaBot{manaB,4};
@@ -228,7 +241,11 @@ int main(){
         std::cout<<carte;
     }
 
+
     std::cout<<std::endl;
+
+
+    pachetInitial.setPachet(copiePachet.get_pachet());
 
     return 0;
 }
