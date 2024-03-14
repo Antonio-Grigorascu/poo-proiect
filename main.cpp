@@ -11,7 +11,7 @@ private:
 
 public:
     // constructor initializare carte
-    Carte(int valoareCarte, const std::string &culoareCarte) : valoareCarte{valoareCarte}, culoareCarte{culoareCarte} {
+    Carte(const int valoareCarte, const std::string &culoareCarte) : valoareCarte{valoareCarte}, culoareCarte{culoareCarte} {
 //        std::cout<<"Initializare carte"<<std::endl;
     }
     // functii getter
@@ -91,7 +91,7 @@ class Jucator{
 private:
     std::vector<Carte> manaJucator;  // cartile din mana jucatorului
     int nrCartiJucator;  // - numarul de carti - maxim 4, minim 0
-    bool aInceputRandul; // decide daca jucatorul are sau nu prima mutare
+//    bool aInceputRandul; // decide daca jucatorul are sau nu prima mutare
 
 
 //    void joacaCarte(int indice){
@@ -103,11 +103,11 @@ private:
 //    };
 
 public:
-    Jucator(const std::vector<Carte>& manaJucator_, int nrCartiJucator_, bool aInceputRandul_): manaJucator{manaJucator_}, nrCartiJucator{nrCartiJucator_}, aInceputRandul{aInceputRandul_}{
+    Jucator(const std::vector<Carte>& manaJucator_, int nrCartiJucator_): manaJucator{manaJucator_}, nrCartiJucator{nrCartiJucator_}{
         std::cout<<"Ai primit 4 carti"<<std::endl; // constr initializare
 
     }
-    Jucator(const Jucator& other): manaJucator{other.manaJucator}, nrCartiJucator{other.nrCartiJucator}, aInceputRandul{other.aInceputRandul}{
+    Jucator(const Jucator& other): manaJucator{other.manaJucator}, nrCartiJucator{other.nrCartiJucator}{
         std::cout<<"Constructor de copiere pentru Jucator"<<std::endl; // util pentru functia de restart cu acelasi pachet
     }
     ~Jucator(){ // destructor
@@ -116,7 +116,7 @@ public:
     // functii getter
     std::vector<Carte> get_manaJucator(){return manaJucator;}
     //  int get_cartiJucator(){return nrCartiJucator;}
-    bool get_aInceputRandul(){return aInceputRandul;}
+//    bool const get_aInceputRandul(){return aInceputRandul;}
 
 };
 
@@ -124,7 +124,7 @@ class Bot{
 private:
     std::vector<Carte> manaBot; // cartile folosite de bot
     int nrCartiBot; // numarul de carti din mana bot-ului
-    bool aInceputRandul; // decide daca botul a avut sau nu prima mutare (opusul variabilei din Jucator)
+//    bool aInceputRandul; // decide daca botul a avut sau nu prima mutare (opusul variabilei din Jucator)
 //    void atac(int ultimaCarte){
 //        // daca bot-ul are in pachet ultima carte de pe masa, o va folosi pentru a continua randul
 //    };
@@ -133,12 +133,12 @@ private:
 //        // atunci o va folosi pentru a continua randul
 //    };
 public:
-    Bot(const std::vector<Carte>& manaBot_, int nrCartiBot_, bool aInceputRandul_): manaBot{manaBot_}, nrCartiBot{nrCartiBot_}, aInceputRandul{aInceputRandul_}{
+    Bot(const std::vector<Carte>& manaBot_, int nrCartiBot_): manaBot{manaBot_}, nrCartiBot{nrCartiBot_}{
         std::cout<<"Initializare Bot"<<std::endl;  // initializare
     }
     // functii getter
     std::vector<Carte> get_manaBot(){return manaBot;}
-    // int get_cartiBot(){return nrCartiBot;}
+    int get_cartiBot(){return nrCartiBot;}
     // bool get_aInceputRandulBot(){return aInceputRandul;}
 };
 
@@ -149,7 +149,7 @@ int main(){
     // init Carte
     std::vector<std::string> culori = {"trefla", "romb", "inima rosie", "inima neagra"};
     for(int i = 7; i<= 14; i++){
-        for(std::string culoare : culori){
+        for(std::string const &culoare : culori){
             Carte carte = {i,culoare};
             pachetC.push_back(carte);
         }
@@ -165,14 +165,13 @@ int main(){
 
     // afisare carti din pachet
     std::cout<<"Pachetul contine urmatoarele carti"<<std::endl;
-    for(Carte carte : pachetInitial.get_pachet()){
+    for(Carte const &carte : pachetInitial.get_pachet()){
         std::cout<<carte;
     }
     std::cout<<std::endl;
 
     // init Jucator
     std::vector<Carte> mana;
-    bool inceputRandJucator = true;
 
     std::vector<Carte> pachet = pachetInitial.get_pachet();
     // alocare carti pentru jucator
@@ -182,21 +181,19 @@ int main(){
         pachet.erase(pachet.begin() + ceva_random);
     }
 
-    Jucator manaInitialaJucator{mana,4,inceputRandJucator};
+    Jucator manaInitialaJucator{mana,4};
 
     // afisare carti din mana jucatorului
-    if(manaInitialaJucator.get_aInceputRandul()){
-        std::cout<<"Pachetul tau contine: "<<std::endl;
-        for(Carte carte : manaInitialaJucator.get_manaJucator()){
-            std::cout<<carte;
-        }
+    std::cout<<"Pachetul tau contine: "<<std::endl;
+    for(Carte const &carte : manaInitialaJucator.get_manaJucator()){
+        std::cout<<carte;
     }
+
     std::cout<<std::endl;
 
 
     // init Bot
     std::vector<Carte> manaB;
-    bool inceputRandBot = !inceputRandJucator;
 
     // alocare carti pentru bot
     for(int i = 0; i < 4; i++){
@@ -205,17 +202,18 @@ int main(){
         pachet.erase(pachet.begin() + ceva_random);
     }
 
-    Bot manaInitialaBot{manaB,4,inceputRandBot};
+    Bot manaInitialaBot{manaB,4};
 
     // afisare mana bot, nu va ramane in codul final
+    std::cout<<"Bot-ul a primit "<<manaInitialaBot.get_cartiBot()<<" carti."<<std::endl;
     std::cout<<"Pachetul bot-ului contine:"<<std::endl;
-    for(Carte carte : manaInitialaBot.get_manaBot()){
+    for(Carte const &carte : manaInitialaBot.get_manaBot()){
         std::cout<<carte;
     }
 
     std::cout<<std::endl<<"In pachet au ramas urmatoarele carti:"<<std::endl;
     // afisare carti ramase dupa alocare, nu va ramane in codul final
-    for(Carte carte : pachet){
+    for(Carte const &carte : pachet){
         std::cout<<carte;
     }
 
@@ -226,7 +224,7 @@ int main(){
 
     // afisare pachet initial
     std::cout<<"Pachetul tau initial continea:"<<std::endl;
-    for(Carte carte : manaInitialaJucatorCopie.get_manaJucator()){
+    for(Carte const &carte : manaInitialaJucatorCopie.get_manaJucator()){
         std::cout<<carte;
     }
 
