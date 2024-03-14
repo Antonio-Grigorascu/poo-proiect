@@ -1,8 +1,7 @@
 #include<iostream>
 #include<vector>
 #include<string>
-#include<ctime>
-#include<cstdlib>
+#include<random>
 
 
 class Carte{
@@ -74,8 +73,13 @@ public:
     // int get_cartiPachet() {return cartiPachet;}
     int randomIndexGenerator(int max){
         int randomIndex;
-        srand(time(0));
-        randomIndex = (rand() % max) + 1;
+
+        std::random_device rd;
+        std::mt19937 gen(rd());
+        // distributie uniforma de la 0 (primul index al pachetului) pana la max (numarul de carti din pachet - 1)
+        std::uniform_int_distribution<int> distribution(0,max);
+
+        randomIndex = distribution(gen);
         return randomIndex;
     }
 
@@ -173,7 +177,7 @@ int main(){
     std::vector<Carte> pachet = pachetInitial.get_pachet();
     // alocare carti pentru jucator
     for(int i = 0; i < 4; i++){
-        int ceva_random = pachetInitial.randomIndexGenerator(pachet.size());
+        int ceva_random = pachetInitial.randomIndexGenerator(pachet.size()-1);
         mana.push_back(pachet[ceva_random]);
         pachet.erase(pachet.begin() + ceva_random);
     }
@@ -196,7 +200,7 @@ int main(){
 
     // alocare carti pentru bot
     for(int i = 0; i < 4; i++){
-        int ceva_random = pachetInitial.randomIndexGenerator(pachet.size());
+        int ceva_random = pachetInitial.randomIndexGenerator(pachet.size()-1);
         manaB.push_back(pachet[ceva_random]);
         pachet.erase(pachet.begin() + ceva_random);
     }
