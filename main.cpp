@@ -306,7 +306,7 @@ int main(){
 
 
                 int indexCarte;
-                indexCarte = pachetInitial.randomIndexGenerator(nrCartiBot);
+                indexCarte = pachetInitial.randomIndexGenerator(nrCartiBot-1);
                 masaJoc.push_back(manaBot[indexCarte]);
                 manaBot.erase(manaBot.begin()+indexCarte);
 
