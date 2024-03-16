@@ -270,7 +270,7 @@ int main(){
         int cartiMasa = 0;
         std::vector<Carte> masaJoc = pachetInitial.get_masa();
         bool randCurentJucator = manaInitialaJucator.get_randCurentJucator();
-        bool randCurentBot;
+
         int nrCartiJucator = manaInitialaJucator.get_cartiJucator();
         int nrCartiBot = manaInitialaBot.get_cartiBot();
 
@@ -278,6 +278,7 @@ int main(){
         std::vector<Carte> manaBot = manaInitialaBot.get_manaBot();
 
         for(int tura=0; tura<4; tura++) {
+            bool randCurentBot;
             while (randCurentJucator) {
 
                 for (int i = 0; i < nrCartiJucator; i++) {
