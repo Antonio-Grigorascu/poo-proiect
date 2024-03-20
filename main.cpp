@@ -416,7 +416,7 @@ int main(){
 
         int nrCartiBot = manaInitialaBot.get_cartiBot();
 
-        std::vector<Carte> manaJucator = manaInitialaJucator.get_manaJucator();
+//        std::vector<Carte> manaJucator = manaInitialaJucator.get_manaJucator();
         std::vector<Carte> manaBot = manaInitialaBot.get_manaBot();
 
         int puncteJucator=0, puncteBot=0, puncteJoc=0;
@@ -503,10 +503,6 @@ int main(){
     }
 
     std::cout<<std::endl;
-
-
-
-
 
 
     return 0;
