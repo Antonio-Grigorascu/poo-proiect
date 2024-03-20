@@ -437,7 +437,13 @@ int main(){
 
                 manaInitialaJucator.turnJucator(masaJoc, cartiMasa);
 
-                taieturaCurentaJucator = masaJoc[cartiMasa-1].isTaietura(masaJoc[cartiMasa-2]);
+                if(cartiMasa<2){
+                    taieturaCurentaJucator = true;
+                }
+                else{
+                    taieturaCurentaJucator = masaJoc[cartiMasa-1].isTaietura(masaJoc[cartiMasa-2]);
+                }
+
 
 
                 if(masaJoc[cartiMasa-1].getValoareCarte() == 10 || masaJoc[cartiMasa-1].getValoareCarte() == 11){
