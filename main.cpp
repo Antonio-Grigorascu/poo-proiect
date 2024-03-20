@@ -22,7 +22,7 @@ public:
     friend std::ostream& operator<<(std::ostream& os, const Carte& carte);
 
     // metode
-    bool isTaietura(const Carte& cartePrecedenta){
+    bool isTaietura(Carte& cartePrecedenta){
         if(this->valoareCarte == 7){
             return true;
         }
