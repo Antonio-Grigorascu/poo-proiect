@@ -137,7 +137,7 @@ public:
     void setRandCurentJucator(bool randCurentJucator_) {
         Jucator::randCurentJucator = randCurentJucator_;
     }
-
+    
 
 };
 
@@ -162,6 +162,47 @@ public:
     int get_cartiBot(){return nrCartiBot;}
     // bool get_aInceputRandulBot(){return aInceputRandul;}
 };
+
+//int isTaietura(int valoare){
+//    return valoare == 7;
+//}
+
+
+void turnJucator(std::vector<Carte>& manaJucator, int& nrCartiJucator, std::vector<Carte>& masaJoc, int& cartiMasa){
+    for (int i = 0; i < nrCartiJucator; i++) {
+        std::cout << "Tasta " << i << " pentru a juca cartea " << manaJucator[i];
+    }
+    int indexCarte = -1;
+    while(indexCarte < 0 || indexCarte > nrCartiJucator -1) {
+        std::cin >> indexCarte;
+
+        if (indexCarte < 0 || indexCarte > nrCartiJucator - 1) {
+            std::cout << "Actiunea nu este posibila" << std::endl;
+        }
+    }
+    masaJoc.push_back(manaJucator[indexCarte]);
+    manaJucator.erase(manaJucator.begin() + indexCarte);
+
+    cartiMasa++;
+    nrCartiJucator--;
+
+    std::cout<<"Cartea dvs."<<std::endl;
+    std::cout << masaJoc[cartiMasa - 1] << std::endl;
+}
+
+void turnBot(std::vector<Carte>& manaBot, int& nrCartiBot, std::vector<Carte>& masaJoc, int&cartiMasa, Dealer& pachetInitial){
+    int indexCarte;
+    indexCarte = pachetInitial.randomIndexGenerator(nrCartiBot-1);
+    masaJoc.push_back(manaBot[indexCarte]);
+    manaBot.erase(manaBot.begin()+indexCarte);
+
+    cartiMasa++;
+    nrCartiBot--;
+
+    std::cout<<"Cartea adversarului"<<std::endl;
+    std::cout << masaJoc[cartiMasa - 1] << std::endl;
+
+}
 
 
 int main(){
@@ -280,43 +321,13 @@ int main(){
         for(int tura=0; tura<4; tura++) {
             bool randCurentBot;
             while (randCurentJucator) {
-
-                for (int i = 0; i < nrCartiJucator; i++) {
-                    std::cout << "Tasta " << i << " pentru a juca cartea " << manaJucator[i];
-                }
-                int indexCarte = -1;
-                while(indexCarte < 0 || indexCarte > nrCartiJucator -1) {
-                    std::cin >> indexCarte;
-
-                    if (indexCarte < 0 || indexCarte > nrCartiJucator - 1) {
-                        std::cout << "Actiunea nu este posibila" << std::endl;
-                    }
-                }
-                masaJoc.push_back(manaJucator[indexCarte]);
-                manaJucator.erase(manaJucator.begin() + indexCarte);
-
-                cartiMasa++;
-                nrCartiJucator--;
-
-                std::cout<<"Cartea dvs."<<std::endl;
-                std::cout << masaJoc[cartiMasa - 1] << std::endl;
+                turnJucator(manaJucator,nrCartiJucator,masaJoc,cartiMasa);
                 randCurentJucator = false;
             }
             randCurentBot = true;
             while (randCurentBot && nrCartiBot > 0) {
 
-
-                int indexCarte;
-                indexCarte = pachetInitial.randomIndexGenerator(nrCartiBot-1);
-                masaJoc.push_back(manaBot[indexCarte]);
-                manaBot.erase(manaBot.begin()+indexCarte);
-
-                cartiMasa++;
-                nrCartiBot--;
-
-                std::cout<<"Cartea adversarului"<<std::endl;
-                std::cout << masaJoc[cartiMasa - 1] << std::endl;
-
+                turnBot(manaBot,nrCartiBot,masaJoc,cartiMasa,pachetInitial);
 
                 randCurentBot = false;
             }
