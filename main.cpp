@@ -22,7 +22,7 @@ public:
     friend std::ostream& operator<<(std::ostream& os, const Carte& carte);
 
     // metode
-    bool isTaietura(Carte& cartePrecedenta){
+    bool isTaietura(const Carte& cartePrecedenta){
         if(this->valoareCarte == 7){
             return true;
         }
@@ -101,6 +101,8 @@ public:
         Dealer::masa = masa_;
     }
 
+    // metode
+
     int randomIndexGenerator(int max){
         int randomIndex;
 
@@ -111,6 +113,18 @@ public:
 
         randomIndex = distribution(gen);
         return randomIndex;
+    }
+
+    void aCastigatJocul(int puncteJucator, int puncteBot){
+        if(puncteJucator>puncteBot){
+            std::cout<<"Felicitari! Ati castigat jocul"<<std::endl;
+        }
+        if(puncteJucator<puncteBot){
+            std::cout<<"Ati pierdut!"<<std::endl;
+        }
+        if(puncteJucator==puncteBot){
+            std::cout<<"Egalitate!"<<std::endl;
+        }
     }
 
 
@@ -469,6 +483,10 @@ int main(){
     std::cout<<"Punctele adversarului "<<puncteBot<<std::endl<<std::endl;
 
     std::cout<<"Jocul s-a terminat!"<<std::endl<<std::endl;
+
+    pachetInitial.aCastigatJocul(puncteJucator,puncteBot);
+    std::cout<<std::endl;
+
 
     // afisare pachet initial Jucator
     std::cout<<"Pachetul tau initial continea:"<<std::endl;
