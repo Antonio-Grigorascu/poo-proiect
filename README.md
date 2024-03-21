@@ -1,5 +1,16 @@
 # Joc Șeptica
 
+## Descriere
+
+În acest joc se utilizează 32 de carti din pachetul standard, începând cu 7 – 7,8,9,J,Q,K și A. 
+Runda începe cu împarțirea a 4 cărți extrase aleatoriu pentru fiecare dintre jucatori.
+Se numește tăiere orrce carte care are aceeași valoarea cu cartea jucată de oponent, în aceeași rundă.
+Toate cărțile cu valoarea 7 sunt tăieri universale.
+Cărțile A și 10 valorează câte un punct. Scopul jocului este acumularea unui număr maxim de puncte!
+
+Acesta este un tutorial pentru jocul de Șeptică. El are ca scop acomodarea cu conceptul de tăiere și puncte! 
+
+
 ### Important!
 Aveți voie cu cod generat de modele de limbaj la care nu ați contribuit semnificativ doar în folder-ul `generated`.
 Codul generat pus "ca să fie"/pe care nu îl înțelegeți se punctează doar pentru puncte bonus, doar în contextul
