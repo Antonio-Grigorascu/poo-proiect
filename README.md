@@ -3,7 +3,7 @@
 ## Descriere
 
 În acest joc se utilizează 32 de carti din pachetul standard, începând cu 7 – 7,8,9,J,Q,K și A. 
-Runda începe cu împarțirea a 4 cărți extrase aleatoriu pentru fiecare dintre jucatori.
+Runda începe cu împărțirea a 4 cărți extrase aleatoriu pentru fiecare dintre jucatori.
 Se numește tăiere orice carte care are aceeași valoarea cu cartea jucată de oponent, în aceeași rundă.
 Toate cărțile cu valoarea 7 sunt tăieri universale.
 Cărțile A și 10 valorează câte un punct. Scopul jocului este acumularea unui număr maxim de puncte!
