@@ -2,8 +2,6 @@
 #include<vector>
 #include<string>
 #include<random>
-//#include<thread>
-//#include<chrono>
 
 
 class Carte{
@@ -18,6 +16,7 @@ public:
     }
     // functii getter
     int getValoareCarte() const {return valoareCarte;}
+
 
     // operator << de afisare
     friend std::ostream& operator<<(std::ostream& os, const Carte& carte);
@@ -140,6 +139,7 @@ public:
         for (int i = 0; i < this->nrCartiJucator; i++) {
             std::cout << "Tasta " << i << " pentru a juca cartea " << this->manaJucator[i];
         }
+        std::cout<<"----------------------------------------------------------------------"<<std::endl;
         int indexCarte = -1;
         while(indexCarte < 0 || indexCarte > this->nrCartiJucator -1) {
             std::cin >> indexCarte;
@@ -222,9 +222,58 @@ public:
 
     }
 
-    void turnBot(std::vector<Carte>& masaJoc, int&cartiMasa, Joc& joc){
+    int cautareSapte(){
+        int indexTaiere = -1;
+        for(int i = 0; i<this->nrCartiBot; i++){
+            if(this->manaBot[i].getValoareCarte() == 7){
+                indexTaiere = i;
+            }
+        }
+        return indexTaiere;
+    }
+
+
+    int cautareTaiere(std::vector<Carte>& masaJoc, int& cartiMasa){
+        int indexTaiere = -1;
+        for(int i = 0; i<this->nrCartiBot; i++){
+            if(this->manaBot[i].getValoareCarte() == masaJoc[cartiMasa-1].getValoareCarte()){
+                indexTaiere = i;
+            }
+        }
+        return indexTaiere;
+    }
+
+
+
+    int cautarePuncte(std::vector<Carte>& masaJoc, int& cartiMasa){
+        Carte ultimaCarte = masaJoc[cartiMasa-1];
+        if(ultimaCarte.getValoareCarte() == 10 || ultimaCarte.getValoareCarte() == 11){
+            return true;
+        }
+        return false;
+    }
+
+    void turnBot(std::vector<Carte>& masaJoc, int& cartiMasa, Joc& joc){
         int indexCarte;
-        indexCarte = joc.randomIndexGenerator(this->nrCartiBot-1);
+        if(cautareTaiere(masaJoc,cartiMasa) != -1 && masaJoc[cartiMasa-1].getValoareCarte() != 7){  // daca are o taiere care nu este 7, o va juca mereu
+            indexCarte = cautareTaiere(masaJoc,cartiMasa);
+        }
+        else{
+            if(cautareSapte() != -1 && cautarePuncte(masaJoc, cartiMasa)){ // daca singura lui taiere este 7 si exista puncte in joc, o va juca (incearca mereu sa fure puncte)
+                indexCarte = cautareSapte();
+            }
+            else{
+                indexCarte = joc.randomIndexGenerator(this->nrCartiBot-1);  // daca nu are taieri sau nu exista puncte in joc, va cauta o carte random
+                int incercari = 0; // botul va incerca mereu sa pastreze cartea 7, dar are o limita de 3 incercari
+                while(cautareSapte() == indexCarte && incercari < 3) { // are la dispozitie 3 incercari sa gaseasca alta carte ( in cazul in care are doar carti de 7 va juca 7)
+                    indexCarte = joc.randomIndexGenerator(this->nrCartiBot - 1);
+                    incercari++;
+                }
+            }
+        }
+
+
+
         masaJoc.push_back(this->manaBot[indexCarte]);
         this->manaBot.erase(this->manaBot.begin()+indexCarte);
 
@@ -238,13 +287,6 @@ public:
 
 };
 
-
-//int isPunct(Carte& carteCurenta){
-//    if(carteCurenta.getValoareCarte()==10 || carteCurenta.getValoareCarte()==11){
-//        return true;
-//    }
-//    return false;
-//}
 
 //void endTurnJucator(std::vector<Carte>& manaJucator, int& nrCartiJucator, std::vector<Carte>& masaJoc, int& cartiMasa, Dealer& pachetInitial){
 //        int tastatura;
@@ -426,10 +468,28 @@ public:
         if (taieturaCurentaJucator) {
             std::cout << "Aveti taietura" << std::endl << std::endl;
             puncteJucator += puncteJoc;
+            if(puncteJoc != 0){
+                if(puncteJoc == 1){
+                    std::cout<<"Ati furat un punct!"<<std::endl;
+                }
+                else{
+                    std::cout<<"Ati furat "<<puncteJoc<<" puncte!"<<std::endl;
+                }
+
+            }
         } else {
 
             std::cout << "Adversarul are taietura" << std::endl << std::endl;
             puncteBot += puncteJoc;
+            if(puncteJoc != 0){
+                if(puncteJoc == 1){
+                    std::cout<<"Adversarul a furat un punct!"<<std::endl;
+                }
+                else{
+                    std::cout<<"Adversarul a furat "<<puncteJoc<<" puncte!"<<std::endl;
+                }
+
+            }
         }
         taieturaCurentaJucator = !taieturaCurentaJucator;
         puncteJoc = 0;
@@ -530,12 +590,12 @@ int main(){
 
         while(manaInitialaJucator.get_cartiJucator() > 0 && manaInitialaBot.get_cartiBot() > 0) {
             bool randCurentBot;
-
+            std::cout<<std::endl;
             std::cout<<"Punctele dvs. "<<puncteJucator<<std::endl;
             std::cout<<"Punctele adversarului "<<puncteBot<<std::endl<<std::endl;
 
             pachetInitial.runda(joc, cartiMasa, masaJoc, randCurentJucator, nrCartiBot,puncteJucator,puncteBot,puncteJoc, taieturaCurentaJucator, randCurentBot, manaInitialaJucator, manaInitialaBot);
-
+//            manaInitialaBot.afisareBot();
             if(pachetInitial.get_cartiPachet() >=2){
                 pachetInitial.alocareCarteJucator(manaInitialaJucator,joc);
                 pachetInitial.alocareCarteBot(manaInitialaBot,joc);
@@ -547,6 +607,7 @@ int main(){
         }
 
     // FINAL JOC
+    std::cout<<std::endl;
     std::cout<<"Punctele dvs. "<<puncteJucator<<std::endl;
     std::cout<<"Punctele adversarului "<<puncteBot<<std::endl<<std::endl;
 
@@ -574,6 +635,7 @@ int main(){
     std::cout<<std::endl;
 
     std::cout<<"S-au disputat "<<randuri<<" randuri"<<std::endl;
+    std::cout<<"----------------------------------------------------------------------"<<std::endl;
 
 
 
