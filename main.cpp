@@ -6,9 +6,6 @@
 //#include<chrono>
 
 
-
-
-
 class Carte{
 private:
     int valoareCarte;
@@ -129,7 +126,7 @@ public:
     void setRandCurentJucator(bool randCurentJucator_) {
         Jucator::randCurentJucator = randCurentJucator_;
     }
-    void setManaJucator(std::vector<Carte>& manaJucator_){
+    void setManaJucator(const std::vector<Carte>& manaJucator_){
         Jucator::manaJucator = manaJucator_;
     }
     void setNrCartiJucator(int nrCartiJucator_){
@@ -309,7 +306,7 @@ public:
     }
 
     // functii geter
-    std::vector<Carte> get_pachet() {return pachet;}
+//    std::vector<Carte> get_pachet() {return pachet;}
     int get_cartiPachet() {return cartiPachet;}
     std::vector<Carte> get_masa(){return masa;}
 
@@ -380,7 +377,7 @@ public:
                int& cartiMasa,
                std::vector<Carte>& masaJoc,
                bool& randCurentJucator,
-               int& nrCartiBot,
+               const int& nrCartiBot,
                int& puncteJucator,
                int& puncteBot,
                int& puncteJoc,
@@ -479,7 +476,7 @@ int main(){
 
     // init Jucator
     std::vector<Carte> mana;
-    std::vector<Carte> pachet = pachetInitial.get_pachet();
+//    std::vector<Carte> pachet = pachetInitial.get_pachet();
 
     pachetInitial.initializareJucator(joc, mana);
     Jucator manaInitialaJucator{mana,4, false};
@@ -525,7 +522,7 @@ int main(){
         std::vector<Carte> masaJoc = pachetInitial.get_masa();
         bool randCurentJucator = manaInitialaJucator.get_randCurentJucator();
         int nrCartiBot = manaInitialaBot.get_cartiBot();
-        std::vector<Carte> manaBot = manaInitialaBot.get_manaBot();
+//        std::vector<Carte> manaBot = manaInitialaBot.get_manaBot();
         int puncteJucator=0, puncteBot=0, puncteJoc=0;
         bool taieturaCurentaJucator = true;
 
