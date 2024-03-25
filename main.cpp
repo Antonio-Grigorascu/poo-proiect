@@ -233,7 +233,7 @@ public:
     }
 
 
-    int cautareTaiere(std::vector<Carte>& masaJoc, int& cartiMasa){
+    int cautareTaiere(std::vector<Carte>& masaJoc, const int& cartiMasa){
         int indexTaiere = -1;
         for(int i = 0; i<this->nrCartiBot; i++){
             if(this->manaBot[i].getValoareCarte() == masaJoc[cartiMasa-1].getValoareCarte()){
@@ -245,8 +245,8 @@ public:
 
 
 
-    int cautarePuncte(std::vector<Carte>& masaJoc, int& cartiMasa){
-        Carte ultimaCarte = masaJoc[cartiMasa-1];
+    int cautarePuncte(const std::vector<Carte>& masaJoc, const int& cartiMasa){
+        const Carte& ultimaCarte = masaJoc[cartiMasa-1];
         if(ultimaCarte.getValoareCarte() == 10 || ultimaCarte.getValoareCarte() == 11){
             return true;
         }
