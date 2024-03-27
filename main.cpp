@@ -3,21 +3,6 @@
 #include<string>
 #include<random>
 
-std::string schimbareValoare(int valoare){
-    if(valoare == 11){
-        return ("A");
-    }
-    if(valoare == 12){
-        return ("J");
-    }
-    if(valoare == 13){
-        return ("Q");
-    }
-    if(valoare == 14){
-        return ("K");
-    }
-    return std::to_string(valoare);
-}
 
 class Carte{
 private:
@@ -32,12 +17,28 @@ public:
     // functii getter
     int getValoareCarte() const {return valoareCarte;}
 
+    std::string schimbareValoare() const {
+        if(valoareCarte == 11){
+            return ("A");
+        }
+        if(valoareCarte == 12){
+            return ("J");
+        }
+        if(valoareCarte == 13){
+            return ("Q");
+        }
+        if(valoareCarte == 14){
+            return ("K");
+        }
+        return std::to_string(valoareCarte);
+    }
+
 
     // operator << de afisare
     friend std::ostream& operator<<(std::ostream& os, const Carte& carte);
 
     // metode
-    bool isTaietura(const Carte& cartePrecedenta){
+    bool isTaietura (const Carte& cartePrecedenta){
         if(this->valoareCarte == 7){
             return true;
         }
@@ -47,36 +48,36 @@ public:
         return false;
     }
 
-    void afisareInimaRosie(){
-        std::cout<<" ____ \n|" + schimbareValoare(valoareCarte) + "   |\n|(\\/)|\n| \\/ |\n|   " + schimbareValoare(valoareCarte) + "|\n";
+    void afisareInimaRosie() const{
+        std::cout<<" ____ \n|" + schimbareValoare() + "   |\n|(\\/)|\n| \\/ |\n|   " + schimbareValoare() + "|\n";
     }
 
-    void afisareRomb(){
-        std::cout<<" ____ \n|"+ schimbareValoare(valoareCarte)+"   |\n| /\\ |\n| \\/ |\n|   "   +schimbareValoare(valoareCarte) + "|\n";
+    void afisareRomb() const{
+        std::cout<<" ____ \n|"+ schimbareValoare()+"   |\n| /\\ |\n| \\/ |\n|   "   +schimbareValoare() + "|\n";
     }
 
-    void afisareInimaNeagra(){
-        std::cout<<" ____ \n|" + schimbareValoare(valoareCarte) + "   |\n| /\\ |\n|(__)|\n| /\\" + schimbareValoare(valoareCarte) + "|\n";
+    void afisareInimaNeagra() const{
+        std::cout<<" ____ \n|" + schimbareValoare() + "   |\n| /\\ |\n|(__)|\n| /\\" + schimbareValoare() + "|\n";
     }
 
-    void afisareTrefla(){
-        std::cout<<" ____ \n|" + schimbareValoare(valoareCarte) + "   |\n| &  |\n|&|& |\n|   " + schimbareValoare(valoareCarte) + "|\n";
+    void afisareTrefla() const{
+        std::cout<<" ____ \n|" + schimbareValoare() + "   |\n| &  |\n|&|& |\n|   " + schimbareValoare() + "|\n";
     }
 
-    void afisareInimaRosieZ(){
-        std::cout<<" ____ \n|" + schimbareValoare(valoareCarte) + "  |\n|(\\/)|\n| \\/ |\n|  " + schimbareValoare(valoareCarte) + "|\n";
+    void afisareInimaRosieZ() const{
+        std::cout<<" ____ \n|" + schimbareValoare() + "  |\n|(\\/)|\n| \\/ |\n|  " + schimbareValoare() + "|\n";
     }
 
-    void afisareRombZ(){
-        std::cout<<" ____ \n|"+ schimbareValoare(valoareCarte)+"  |\n| /\\ |\n| \\/ |\n|  "   +schimbareValoare(valoareCarte) + "|\n";
+    void afisareRombZ() const{
+        std::cout<<" ____ \n|"+ schimbareValoare()+"  |\n| /\\ |\n| \\/ |\n|  "   +schimbareValoare() + "|\n";
     }
 
-    void afisareInimaNeagraZ(){
-        std::cout<<" ____ \n|" + schimbareValoare(valoareCarte) + "  |\n| /\\ |\n|(__)|\n| / " + schimbareValoare(valoareCarte) + "|\n";
+    void afisareInimaNeagraZ() const{
+        std::cout<<" ____ \n|" + schimbareValoare() + "  |\n| /\\ |\n|(__)|\n| / " + schimbareValoare() + "|\n";
     }
 
-    void afisareTreflaZ(){
-        std::cout<<" ____ \n|" + schimbareValoare(valoareCarte) + "  |\n| &  |\n|&|& |\n|  " + schimbareValoare(valoareCarte) + "|\n";
+    void afisareTreflaZ() const{
+        std::cout<<" ____ \n|" + schimbareValoare() + "  |\n| &  |\n|&|& |\n|  " + schimbareValoare() + "|\n";
     }
 
     void afisareAsciiArt(){
@@ -119,7 +120,7 @@ public:
 
 
 std::ostream& operator<<(std::ostream& os, const Carte& carte){
-    os << schimbareValoare(carte.valoareCarte)<<" de "<<carte.culoareCarte<<std::endl;
+    os << carte.schimbareValoare()<<" de "<<carte.culoareCarte<<std::endl;
     return os;
 };
 
