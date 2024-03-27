@@ -8,7 +8,6 @@ class Carte{
 private:
     int valoareCarte;
     std::string culoareCarte;
-
 public:
     // constructor initializare carte
     Carte(const int valoareCarte, const std::string &culoareCarte) : valoareCarte{valoareCarte}, culoareCarte{culoareCarte} {
