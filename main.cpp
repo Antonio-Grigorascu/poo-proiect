@@ -3,6 +3,21 @@
 #include<string>
 #include<random>
 
+std::string schimbareValoare(int valoare){
+    if(valoare == 11){
+        return ("A");
+    }
+    if(valoare == 12){
+        return ("J");
+    }
+    if(valoare == 13){
+        return ("Q");
+    }
+    if(valoare == 14){
+        return ("K");
+    }
+    return std::to_string(valoare);
+}
 
 class Carte{
 private:
@@ -32,23 +47,76 @@ public:
         return false;
     }
 
+    void afisareInimaRosie(){
+        std::cout<<" ____ \n|" + schimbareValoare(valoareCarte) + "   |\n|(\\/)|\n| \\/ |\n|   " + schimbareValoare(valoareCarte) + "|\n";
+    }
+
+    void afisareRomb(){
+        std::cout<<" ____ \n|"+ schimbareValoare(valoareCarte)+"   |\n| /\\ |\n| \\/ |\n|   "   +schimbareValoare(valoareCarte) + "|\n";
+    }
+
+    void afisareInimaNeagra(){
+        std::cout<<" ____ \n|" + schimbareValoare(valoareCarte) + "   |\n| /\\ |\n|(__)|\n| /\\" + schimbareValoare(valoareCarte) + "|\n";
+    }
+
+    void afisareTrefla(){
+        std::cout<<" ____ \n|" + schimbareValoare(valoareCarte) + "   |\n| &  |\n|&|& |\n|   " + schimbareValoare(valoareCarte) + "|\n";
+    }
+
+    void afisareInimaRosieZ(){
+        std::cout<<" ____ \n|" + schimbareValoare(valoareCarte) + "  |\n|(\\/)|\n| \\/ |\n|  " + schimbareValoare(valoareCarte) + "|\n";
+    }
+
+    void afisareRombZ(){
+        std::cout<<" ____ \n|"+ schimbareValoare(valoareCarte)+"  |\n| /\\ |\n| \\/ |\n|  "   +schimbareValoare(valoareCarte) + "|\n";
+    }
+
+    void afisareInimaNeagraZ(){
+        std::cout<<" ____ \n|" + schimbareValoare(valoareCarte) + "  |\n| /\\ |\n|(__)|\n| / " + schimbareValoare(valoareCarte) + "|\n";
+    }
+
+    void afisareTreflaZ(){
+        std::cout<<" ____ \n|" + schimbareValoare(valoareCarte) + "  |\n| &  |\n|&|& |\n|  " + schimbareValoare(valoareCarte) + "|\n";
+    }
+
+    void afisareAsciiArt(){
+        if(culoareCarte == "inima rosie"){
+            if(valoareCarte == 10){
+                afisareInimaRosieZ();
+            }
+            else{
+                afisareInimaRosie();
+            }
+
+        }
+        if(culoareCarte == "inima neagra"){
+            if(valoareCarte == 10){
+                afisareInimaNeagraZ();
+            }
+            else{
+                afisareInimaNeagra();
+            }
+        }
+        if(culoareCarte == "romb"){
+            if(valoareCarte == 10){
+                afisareRombZ();
+            }
+            else{
+                afisareRomb();
+            }
+        }
+        if(culoareCarte == "trefla"){
+            if(valoareCarte == 10){
+                afisareTreflaZ();
+            }
+            else{
+                afisareTrefla();
+            }
+        }
+    }
 };
 
-std::string schimbareValoare(int valoare){
-    if(valoare == 11){
-        return ("A");
-    }
-    if(valoare == 12){
-        return ("J");
-    }
-    if(valoare == 13){
-        return ("Q");
-    }
-    if(valoare == 14){
-        return ("K");
-    }
-    return std::to_string(valoare);
-}
+
 
 std::ostream& operator<<(std::ostream& os, const Carte& carte){
     os << schimbareValoare(carte.valoareCarte)<<" de "<<carte.culoareCarte<<std::endl;
@@ -140,16 +208,16 @@ public:
             std::cout << "Tasta " << i << " pentru a juca cartea " << this->manaJucator[i];
         }
         std::cout<<"----------------------------------------------------------------------"<<std::endl;
-        int indexCarte = -1;
-        while(indexCarte < 0 || indexCarte > this->nrCartiJucator -1) {
+        std::string indexCarte = "x";
+        while(indexCarte != "0" && indexCarte != "1" && indexCarte != "2" && indexCarte != "3" ) {
             std::cin >> indexCarte;
 
-            if (indexCarte < 0 || indexCarte > this->nrCartiJucator - 1) {
+            if (indexCarte != "0" && indexCarte != "1" && indexCarte != "2" && indexCarte != "3" ) {
                 std::cout << "Actiunea nu este posibila" << std::endl;
             }
         }
-        masaJoc.push_back(this->manaJucator[indexCarte]);
-        this->manaJucator.erase(this->manaJucator.begin() + indexCarte);
+        masaJoc.push_back(this->manaJucator[std::stoi(indexCarte)]);
+        this->manaJucator.erase(this->manaJucator.begin() + std::stoi(indexCarte));
 
         cartiMasa++;
         this->nrCartiJucator--;
@@ -453,6 +521,9 @@ public:
 
             manaInitialaBot.turnBot(masaJoc, cartiMasa, joc);
 
+            masaJoc[cartiMasa - 2].afisareAsciiArt();
+            masaJoc[cartiMasa - 1].afisareAsciiArt();
+
 
             taieturaCurentaJucator = !(masaJoc[cartiMasa - 1].isTaietura(masaJoc[cartiMasa - 2]));
 
@@ -501,10 +572,10 @@ public:
 
     }
 
-    void incepeJocul(int& tastatura, Jucator& manaInitialaJucator, Dealer& pachetInitial){
+    void incepeJocul(std::string& tastatura, Jucator& manaInitialaJucator, Dealer& pachetInitial){
         std::cin >> tastatura;
 
-        if (tastatura == 1) {
+        if (tastatura == "1") {
             std::cout << "Jocul a inceput" << std::endl << std::endl;
             manaInitialaJucator.setRandCurentJucator(true);
             pachetInitial.setMasa({});
@@ -518,7 +589,9 @@ public:
 
 
 
+
 int main(){
+
     Joc joc;
 
     std::vector<Carte> pachetC;
@@ -573,8 +646,8 @@ int main(){
 //    pachetInitial.setPachet(copiePachet.get_pachet());
     std::cout<<"Press 1 to start"<<std::endl;
 
-    int tastatura = 0;
-    while(tastatura!=1) {
+    std::string tastatura = "0";
+    while(tastatura!="1") {
         pachetInitial.incepeJocul(tastatura, manaInitialaJucator,pachetInitial);
     }
 
