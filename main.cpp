@@ -580,7 +580,7 @@ public:
             manaInitialaJucator.setRandCurentJucator(true);
             pachetInitial.setMasa({});
         } else {
-            std::cout << "Press 1 to start" << std::endl;
+            std::cout << "Tasta 1 pentru a incepe jocul" << std::endl;
         }
     }
 

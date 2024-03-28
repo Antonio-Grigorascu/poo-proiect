@@ -2,13 +2,13 @@
 
 ## Descriere
 
-În acest joc se utilizează 32 de carti din pachetul standard, începând cu 7 – 7, 8, 9, J, Q, K și A. 
-Runda începe cu împărțirea a 4 cărți extrase aleatoriu pentru fiecare dintre jucători.
+În acest joc se utilizează 32 de carti din pachetul standard, începând cu 7 – 7, 8, 9, 10, J, Q, K și A. 
+La începutul jocului, fiecare jucător primește 4 cărți extrase aleatoriu din pachet.
 Se numește tăiere orice carte care are aceeași valoare cu cartea jucată de oponent, în aceeași rundă.
 Toate cărțile cu valoarea 7 sunt tăieri universale.
 Cărțile A și 10 valorează câte un punct. Scopul jocului este acumularea unui număr maxim de puncte!
-
-Acesta este un tutorial pentru jocul de Șeptică. El are ca scop acomodarea cu conceptul de tăiere și puncte! 
+Jocul începe cu unul dintre jucători aruncând o carte pe masă. Adversarul trebuie să arunce o carte care poate tăia cartea precedentă.
+Dacă adversarul joacă o tăiere, acesta va colecta toate cărțile de pe masă, inclusiv punctele.
 
 
 ### Important!
